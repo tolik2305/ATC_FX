@@ -37,13 +37,11 @@ public class Controller {
     @FXML
     private TableColumn<PhoneNumber, String> telephoneColumn;
 
-    public static PhoneNumbers phoneNumbers;
-
-    private static BackUp backUp;
+    private static PhoneNumbers phoneNumbers;
 
     @FXML
     private void initialize(){
-        phoneNumbers = new PhoneNumbers(10);
+        phoneNumbers = new PhoneNumbers();
 
         numberTelephoneColumn.setCellValueFactory(new PropertyValueFactory<PhoneNumber, String>("number"));
         fullNameColumn.setCellValueFactory(new PropertyValueFactory<PhoneNumber, String>("fullName"));
@@ -53,21 +51,8 @@ public class Controller {
     }
 
     public static void BackUp() {
-        backUp = new BackUp("Phones.bcp", phoneNumbers);
+        BackUp backUp = new BackUp("Phones.bcp", phoneNumbers);
         backUp.start();
-    }
-
-    private void initPhones() {
-//        phoneNumbers.add(new PhoneNumber("+380(68)539-72-84"));
-//        phoneNumbers.add(new PhoneNumber("+380(99)652-94-04", "Петров Анатолий Васильевич", "г.Одесса, ул.Филатова, 37", Telephone.Мобильный));
-//        phoneNumbers.add(new PhoneNumber("+380(98)229-25-57"));
-//        phoneNumbers.add(new PhoneNumber("+380(67)776-76-77", "Иванов Иван Иванович", "г.Одесса, Старопортофранковская, 4б", Telephone.Домашний));
-//        phoneNumbers.add(new PhoneNumber("+380(97)778-99-87"));
-//        phoneNumbers.add(new PhoneNumber("+380(93)339-33-93", "Петров Анатолий Фёдорович", "с.Виноградовка, ул.Ленина, 167", Telephone.Рабочий));
-//        phoneNumbers.add(new PhoneNumber("+380(95)955-59-55", "Иванов Пётр Иванович", "г.Киев, ул.Мира, 73г", Telephone.Мобильный));
-//        phoneNumbers.add(new PhoneNumber("+380(96)666-96-86"));
-//        phoneNumbers.add(new PhoneNumber("+380(99)593-93-33"));
-//        phoneNumbers.add(new PhoneNumber("+380(99)593-93-39", "Волков Иван Степанович", "г.Одесса, ул.Пестеля, 2а", Telephone.Домашний));
     }
 
     private void addToTable(){
@@ -75,12 +60,12 @@ public class Controller {
         tablePhoneNumbers.setItems(list);
     }
 
-    public void refresh(){
+    private void refresh(){
         tablePhoneNumbers.getItems().clear();
         addToTable();
     }
 
-    String pathname = null;
+    private String pathname = null;
 
     private boolean FileChooserOpen(){
         FileChooser fileChooser = new FileChooser();
@@ -142,74 +127,53 @@ public class Controller {
     }
 
     public void changeAbonent(ActionEvent actionEvent){
-        String number;
-        String surname;
         Main.inputNumberTelephone();
-        number = InputNumberTelephoneController.number;
-        if(number!=null) {
-            if(phoneNumbers.IsInList(number)) {
+        if(InputNumberTelephoneController.number!=null) {
+            if(phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
                 Main.inputFullname();
-                surname = InputFullnameController.surname;
-                if (surname != null) {
-                    phoneNumbers.reassignementOfOwnership(number, surname);
+                if (InputFullnameController.surname != null) {
+                    phoneNumbers.reassignementOfOwnership(InputNumberTelephoneController.number, InputFullnameController.surname);
                     refresh();
                 }
+            }
+            else {
+                AlertInformation("Поиск номера", "Информация", "Такого номер не найден", Alert.AlertType.INFORMATION);
             }
         }
     }
 
     public void findByNumber(ActionEvent actionEvent){
-        list.clear();
-        String number;
         Main.inputNumberTelephone();
-        number = InputNumberTelephoneController.number;
-        if(number!=null){
-            if(phoneNumbers.IsInList(number)) {
-                list.addAll(phoneNumbers.getDataByNumber(number));
+        if(InputNumberTelephoneController.number!=null){
+            if(phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
+                list.setAll(phoneNumbers.getDataByNumber(InputNumberTelephoneController.number));
+                if(list.size()==0) {
+                    AlertInformation("Поиск абонента по фамилии", "Информация", "Такого абонента нет в базе", Alert.AlertType.INFORMATION);
+                }
             }
-        }
-        if(list.size()==0&&number!=null) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Поиск абонента по фамилии");
-            alert.setHeaderText("Информация");
-            alert.setContentText("Такого абонента нет в базе");
-            alert.showAndWait();
         }
     }
 
     public void findBySurname(ActionEvent actionEvent){
-        list.clear();
-        String surname = null;
         Main.inputSurname();
-        surname = InputSurnameController.surname;
-
-        if(surname!=null) {
-            list.addAll(phoneNumbers.getDataBySurname(surname));
-        }
-        if(list.size()==0&&surname!=null){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Поиск абонента по фамилии");
-            alert.setHeaderText("Не найдено");
-            alert.setContentText("Такого абонента нет в базе");
-            alert.showAndWait();
+        if(InputSurnameController.surname!=null) {
+            list.setAll(phoneNumbers.getDataBySurname(InputSurnameController.surname));
+            if(list.size()==0){
+                AlertInformation("Поиск абонента по фамилии", "Не найдено", "Такого абонента нет в базе", Alert.AlertType.INFORMATION);
+            }
         }
     }
 
     public void listOfAvailableAbonents(ActionEvent actionEvent){
-        list.clear();
-        list.addAll(phoneNumbers.listOfAvailableNumbers());
+        list.setAll(phoneNumbers.listOfAvailableNumbers());
     }
 
     public void printList(ActionEvent actionEvent){
-        refresh();
+        list.setAll(phoneNumbers.getList());
     }
 
     public void about(ActionEvent actionEvent){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("О программе");
-        alert.setHeaderText("Лицензия:");
-        alert.setContentText("Все права на лицензию принадлежат компании ToCMaH 2019©");
-        alert.showAndWait();
+        AlertInformation("О программе", "Лицензия:", "Все права на лицензию принадлежат компании ToCMaH 2019©", Alert.AlertType.INFORMATION);
     }
 
     public void addToList(ActionEvent actionEvent) {
@@ -218,29 +182,28 @@ public class Controller {
             if(phoneNumbers.addToList(InputNumberTelephoneController.number)!=null) {
                 list.add(phoneNumbers.getList().get(phoneNumbers.getList().size() - 1));
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Добавление номера в список");
-                alert.setHeaderText("Номер уже существует");
-                alert.setContentText("Такой номер уже существует в базе, проверьте правильность ввода!");
-                alert.showAndWait();
+                AlertInformation("Добавление номера в список", "Номер уже существует", "Такой номер уже существует в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
             }
         }
     }
 
     public void removeOfList(ActionEvent actionEvent) {
         Main.inputNumberTelephone();
-        String number = InputNumberTelephoneController.number;
-        PhoneNumber phoneNumber = phoneNumbers.removeOfList(number);
-        if(number!=null) {
-            if(phoneNumber!=null) {
+        if(InputNumberTelephoneController.number!=null) {
+            PhoneNumber phoneNumber = phoneNumbers.removeOfList(InputNumberTelephoneController.number);
+            if ((phoneNumber != null)) {
                 list.remove(phoneNumber);
             } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Удаление номера из списка");
-                alert.setHeaderText("Номер не найден");
-                alert.setContentText("Такой номер не найден в базе, проверьте правильность ввода!");
-                alert.showAndWait();
+                AlertInformation("Удаление номера из списка", "Номер не найден", "Такой номер не найден в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
             }
         }
+    }
+
+    private void AlertInformation(String title, String header, String content, Alert.AlertType typeAlert){
+        Alert alert = new Alert(typeAlert);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

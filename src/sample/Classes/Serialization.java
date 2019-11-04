@@ -14,14 +14,13 @@ public class Serialization implements Serializable {
         file = new File(pathname);
     }
 
-    public String Serialization(PhoneNumbers phoneNumbers) throws IOException {
+    public void Serialization(PhoneNumbers phoneNumbers) throws IOException {
         ObjectOutputStream oos = null;
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
             if (fileOutputStream != null) {
                 oos = new ObjectOutputStream(fileOutputStream);
                 oos.writeObject(phoneNumbers.getList());
-                return "Запись прошла успешно";
             }
         } catch (FileNotFoundException e){
             e.printStackTrace();
@@ -37,21 +36,18 @@ public class Serialization implements Serializable {
                 }
             }
         }
-        return "Ошибка записи в файл";
     }
 
-    public String Deserialization(PhoneNumbers phoneNumbers) throws IOException, ClassNotFoundException {
+    public void Deserialization(PhoneNumbers phoneNumbers) throws IOException, ClassNotFoundException {
         FileInputStream fileInputStream = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fileInputStream);
         try {
             phoneNumbers.getList().addAll((ArrayList<PhoneNumber>) ois.readObject());
-            return "Чтение прошло успешно";
         } catch (IOException e) {
             e.printStackTrace();
         }
         finally {
             ois.close();
         }
-        return "Ошибка чтения из файла";
     }
 }

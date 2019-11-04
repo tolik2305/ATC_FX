@@ -28,11 +28,9 @@ public class InputFullnameController {
             OnClickedCancel(mouseEvent);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-
             alert.setTitle("Ошибка!");
             alert.setHeaderText("Некорректный ввод!");
             alert.setContentText("Введите корректную фамилию!");
-
             alert.showAndWait();
         }
     }

@@ -41,7 +41,7 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TableView fx:id="tablePhoneNumbers" prefHeight="381.0" prefWidth="640.0">
+        <TableView fx:id="tablePhoneNumbers" prefHeight="405.0" prefWidth="750.0">
             <columns>
                 <TableColumn fx:id="numberTelephoneColumn" prefWidth="150.0" text="Номер телефона" />
                 <TableColumn fx:id="fullNameColumn" prefWidth="200.0" text="Ф.И.О." />

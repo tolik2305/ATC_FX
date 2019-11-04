@@ -30,11 +30,9 @@ public class InputNumberTelephoneController {
             OnClickedCancel(mouseEvent);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-
             alert.setTitle("Ошибка!");
             alert.setHeaderText("Некорректный ввод!");
             alert.setContentText("Введите номер телефона в указанном формате: +Х(YYY)ZZZ-ZZ-ZZ где X - код страны, Y - код оператора, Z - номер телефона!");
-
             alert.showAndWait();
         }
     }

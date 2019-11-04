@@ -18,20 +18,12 @@ public class PhoneNumbers {
         this.list = new ArrayList<>(length);
     }
 
-    public void add(PhoneNumber phoneNumber){
-        list.add(phoneNumber);
-    }
-
-    /**
-     * Функция вывода на экран
-     */
-    @Override
-    public String toString() {
-        String numbers = "";
-        for (PhoneNumber phoneNumber: this.list) {
-            //numbers += (phoneNumber.number  + phoneNumber.fullName + phoneNumber.adress + phoneNumber.telephone);
+    public ArrayList addToList(String number) {
+        if(!IsInList(number)) {
+            this.list.add(new PhoneNumber(number));
+            return getList();
         }
-        return numbers;
+        return null;
     }
 
     /**
@@ -39,7 +31,6 @@ public class PhoneNumbers {
      */
     public ArrayList getDataByNumber(String number) {
         ArrayList<PhoneNumber> listDataByNumber = new ArrayList<>();
-        String numbers=null;
         for (PhoneNumber phoneNumber: this.list) {
             if (number.equals(phoneNumber.getNumber())) {
                 listDataByNumber.add(phoneNumber);
@@ -67,14 +58,12 @@ public class PhoneNumbers {
     /**
      * Функция переименования владельца для определённого номера телефона
      */
-    public String reassignementOfOwnership(String number, String fullname) {
+    public void reassignementOfOwnership(String number, String fullname) {
         for (PhoneNumber phoneNumber:this.list) {
             if (number.equals(phoneNumber.getNumber())) {
                 phoneNumber.setFullName(fullname);
-                return "Переименование успешно выполнено";
             }
         }
-        return "Такой номер не найден в базе";
     }
 
     /**
@@ -102,14 +91,6 @@ public class PhoneNumbers {
             }
         }
         return listOfAvailableNumbers;
-    }
-
-    public ArrayList addToList(String number) {
-        if(!IsInList(number)) {
-            this.list.add(new PhoneNumber(number));
-            return getList();
-        }
-        return null;
     }
 
     public PhoneNumber removeOfList(String number) {
