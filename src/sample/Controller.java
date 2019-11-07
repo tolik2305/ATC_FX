@@ -128,7 +128,7 @@ public class Controller {
 
     public void changeAbonent(ActionEvent actionEvent){
         Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null) {
+        if(InputNumberTelephoneController.number!=null&& !InputNumberTelephoneController.IsCancel) {
             if(phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
                 Main.inputFullname();
                 if (InputFullnameController.surname != null) {
@@ -144,7 +144,7 @@ public class Controller {
 
     public void findByNumber(ActionEvent actionEvent){
         Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null){
+        if(InputNumberTelephoneController.number!=null&& !InputNumberTelephoneController.IsCancel){
             if(phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
                 list.setAll(phoneNumbers.getDataByNumber(InputNumberTelephoneController.number));
                 if(list.size()==0) {
@@ -156,7 +156,7 @@ public class Controller {
 
     public void findBySurname(ActionEvent actionEvent){
         Main.inputSurname();
-        if(InputSurnameController.surname!=null) {
+        if(InputSurnameController.surname!=null && !InputSurnameController.IsCancel) {
             list.setAll(phoneNumbers.getDataBySurname(InputSurnameController.surname));
             if(list.size()==0){
                 AlertInformation("Поиск абонента по фамилии", "Не найдено", "Такого абонента нет в базе", Alert.AlertType.INFORMATION);
@@ -178,7 +178,7 @@ public class Controller {
 
     public void addToList(ActionEvent actionEvent) {
         Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null) {
+        if(InputNumberTelephoneController.number!=null && !InputNumberTelephoneController.IsCancel) {
             if(phoneNumbers.addToList(InputNumberTelephoneController.number)!=null) {
                 list.add(phoneNumbers.getList().get(phoneNumbers.getList().size() - 1));
             } else {
@@ -189,7 +189,7 @@ public class Controller {
 
     public void removeOfList(ActionEvent actionEvent) {
         Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null) {
+        if(InputNumberTelephoneController.number!=null && !InputNumberTelephoneController.IsCancel) {
             PhoneNumber phoneNumber = phoneNumbers.removeOfList(InputNumberTelephoneController.number);
             if ((phoneNumber != null)) {
                 list.remove(phoneNumber);

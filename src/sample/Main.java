@@ -1,12 +1,15 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import sample.Classes.ClassExecutingTask;
 
 import java.io.IOException;
@@ -23,6 +26,14 @@ public class Main extends Application {
 
         ClassExecutingTask executingTask = new ClassExecutingTask();
         executingTask.start();
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent e) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
 
     public static void inputNumberTelephone(){

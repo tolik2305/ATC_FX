@@ -16,10 +16,12 @@ public class InputSurnameController {
     private TextField txtSurname;
 
     public static String surname;
+    public static boolean IsCancel;
 
     public void OnClickedCancel(MouseEvent mouseEvent) {
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
+        IsCancel = true;
     }
 
     public void OnClickedOk(MouseEvent mouseEvent) {
@@ -33,5 +35,6 @@ public class InputSurnameController {
             alert.setContentText("Введите корректную фамилию!");
             alert.showAndWait();
         }
+        IsCancel = false;
     }
 }
