@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 public class InputFullnameController {
 
     public static String surname;
+    public static boolean IsCancel = false;
     @FXML
     private Button btnCancel;
 
@@ -17,12 +18,13 @@ public class InputFullnameController {
     private TextField txtSurname;
 
 
-    public void OnClickedCancel(MouseEvent mouseEvent){
+    public boolean OnClickedCancel(MouseEvent mouseEvent){
         Stage stage = (Stage) btnCancel.getScene().getWindow();
         stage.close();
+        return IsCancel=true;
     }
 
-    public void OnClickedOk(MouseEvent mouseEvent){
+    public boolean OnClickedOk(MouseEvent mouseEvent){
         if(!txtSurname.getText().isEmpty()&&txtSurname.getText().matches("[А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}")) {
             surname = txtSurname.getText();
             OnClickedCancel(mouseEvent);
@@ -33,5 +35,6 @@ public class InputFullnameController {
             alert.setContentText("Введите корректную фамилию!");
             alert.showAndWait();
         }
+        return IsCancel=false;
     }
 }

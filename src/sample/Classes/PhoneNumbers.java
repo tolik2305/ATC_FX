@@ -66,6 +66,14 @@ public class PhoneNumbers {
         }
     }
 
+    public void renameAdress(String number, String adress){
+        for (PhoneNumber phoneNumber: this.list) {
+            if(number.equals(phoneNumber.getNumber())){
+                phoneNumber.setAdress(adress);
+            }
+        }
+    }
+
     /**
      * Проверка есть ли номер в списке
      * @param number номер телефона

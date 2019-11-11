@@ -11,6 +11,7 @@ import sample.Classes.BackUp;
 import sample.Classes.PhoneNumber;
 import sample.Classes.PhoneNumbers;
 import sample.Classes.Serialization;
+import sample.Controllers.InputAdressController;
 import sample.Controllers.InputFullnameController;
 import sample.Controllers.InputNumberTelephoneController;
 import sample.Controllers.InputSurnameController;
@@ -21,6 +22,15 @@ import java.io.IOException;
 public class Controller {
 
     private ObservableList<PhoneNumber> list = FXCollections.observableArrayList();
+
+    @FXML
+    private MenuItem btnMenuDelete;
+
+    @FXML
+    private MenuItem btnMenuChangeFullname;
+
+    @FXML
+    private MenuItem btnMenuChangeAdress;
 
     @FXML
     private TableView<PhoneNumber> tablePhoneNumbers;
@@ -87,8 +97,8 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Сохранение файла");
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Текстовый документ", "*.txt"),
-                                                 new FileChooser.ExtensionFilter("Сериализованный файл", "*.ser"),
-                                                 new FileChooser.ExtensionFilter("Резеврный файл", "*.bcp"));
+                new FileChooser.ExtensionFilter("Сериализованный файл", "*.ser"),
+                new FileChooser.ExtensionFilter("Резеврный файл", "*.bcp"));
         Window mainStage = null;
         File nameFile = fileChooser.showSaveDialog(mainStage);
         if(nameFile!=null){
@@ -195,6 +205,50 @@ public class Controller {
                 list.remove(phoneNumber);
             } else {
                 AlertInformation("Удаление номера из списка", "Номер не найден", "Такой номер не найден в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
+            }
+        }
+    }
+
+    public void onOpen(WindowEvent windowEvent) {
+        PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            btnMenuDelete.setDisable(true);
+            btnMenuChangeAdress.setDisable(true);
+            btnMenuChangeFullname.setDisable(true);
+        } else {
+            btnMenuDelete.setDisable(false);
+            btnMenuChangeAdress.setDisable(false);
+            btnMenuChangeFullname.setDisable(false);
+        }
+    }
+
+    public void onRemove(ActionEvent actionEvent) {
+        if(!btnMenuDelete.isDisable()) {
+            PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
+            tablePhoneNumbers.getItems().remove(selectedItem);
+            phoneNumbers.getList().remove(selectedItem);
+        }
+
+    }
+
+    public void onChangeAdress(ActionEvent actionEvent) {
+        if(!btnMenuChangeAdress.isDisable()) {
+            PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
+            Main.inputAdress();
+            if (InputAdressController.adress != null && !InputAdressController.IsCancel) {
+                phoneNumbers.renameAdress(selectedItem.getNumber(), InputAdressController.adress);
+                refresh();
+            }
+        }
+    }
+
+    public void onChangeFullname(ActionEvent actionEvent) {
+        if(!btnMenuChangeFullname.isDisable()) {
+            PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
+            Main.inputFullname();
+            if (InputFullnameController.surname != null && !InputFullnameController.IsCancel) {
+                phoneNumbers.reassignementOfOwnership(selectedItem.getNumber(), InputFullnameController.surname);
+                refresh();
             }
         }
     }
