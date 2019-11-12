@@ -74,6 +74,22 @@ public class PhoneNumbers {
         }
     }
 
+    public void renameNumber(String numberOld, String numberNew){
+        for(PhoneNumber phoneNumber: this.list){
+            if(numberOld.equals(phoneNumber.getNumber())){
+                phoneNumber.setNumber(numberNew);
+            }
+        }
+    }
+
+    public void renameTelephone(String number, String telephone){
+        for (PhoneNumber phoneNumber:this.list) {
+            if(number.equals(phoneNumber.getNumber())){
+                phoneNumber.setTelephone(telephone);
+            }
+        }
+    }
+
     /**
      * Проверка есть ли номер в списке
      * @param number номер телефона

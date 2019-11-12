@@ -44,7 +44,7 @@
         </MenuBar>
         <TableView fx:id="tablePhoneNumbers" prefHeight="392.0" prefWidth="730.0">
             <columns>
-                <TableColumn fx:id="numberTelephoneColumn" prefWidth="150.0" text="Номер телефона" />
+                <TableColumn fx:id="numberTelephoneColumn" prefWidth="150.0" text="Номер телефона"/>
                 <TableColumn fx:id="fullNameColumn" prefWidth="200.0" text="Ф.И.О." />
                 <TableColumn fx:id="adressColumn" prefWidth="250.0" text="Адрес" />
                 <TableColumn fx:id="telephoneColumn" prefWidth="150.0" text="Телефон" />
@@ -53,9 +53,11 @@
             <ContextMenu onShowing="#onOpen">
               <items>
                   <MenuItem mnemonicParsing="false" disable="true" text="Операции с данными"/>
-                  <MenuItem fx:id="btnMenuDelete" mnemonicParsing="false" onAction="#onRemove" text="Удалить"/>
+                  <MenuItem fx:id="btnMenuChangeNumber" mnemonicParsing="false" onAction="#onChangeNumber" text="Изменить номер"/>
                   <MenuItem fx:id="btnMenuChangeFullname" mnemonicParsing="false" onAction="#onChangeFullname" text="Изменить Ф.И.О."/>
                   <MenuItem fx:id="btnMenuChangeAdress" mnemonicParsing="false" onAction="#onChangeAdress" text="Изменить адрес"/>
+                  <MenuItem fx:id="btnMenuChangeTelephone" mnemonicParsing="false" onAction="#onChangeTelephone" text="Изменить телефон"/>
+                  <MenuItem fx:id="btnMenuDelete" mnemonicParsing="false" onAction="#onRemove" text="Удалить"/>
 
               </items>
             </ContextMenu>

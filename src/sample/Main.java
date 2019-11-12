@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import sample.Classes.ClassExecutingTask;
+import sample.Controllers.InputTelephoneController;
 
 import java.io.IOException;
 
@@ -90,6 +91,21 @@ public class Main extends Application {
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setTitle("Окно ввода");
             stage.setScene(new Scene(inputAdress));
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void inputTelephone(){
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("FXML/inputTelephone.fxml"));
+            Parent inputTelephone = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.setTitle("Окно ввода");
+            stage.setScene(new Scene(inputTelephone));
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

@@ -11,10 +11,7 @@ import sample.Classes.BackUp;
 import sample.Classes.PhoneNumber;
 import sample.Classes.PhoneNumbers;
 import sample.Classes.Serialization;
-import sample.Controllers.InputAdressController;
-import sample.Controllers.InputFullnameController;
-import sample.Controllers.InputNumberTelephoneController;
-import sample.Controllers.InputSurnameController;
+import sample.Controllers.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +28,12 @@ public class Controller {
 
     @FXML
     private MenuItem btnMenuChangeAdress;
+
+    @FXML
+    private MenuItem btnMenuChangeNumber;
+
+    @FXML
+    private MenuItem btnMenuChangeTelephone;
 
     @FXML
     private TableView<PhoneNumber> tablePhoneNumbers;
@@ -215,30 +218,26 @@ public class Controller {
             btnMenuDelete.setDisable(true);
             btnMenuChangeAdress.setDisable(true);
             btnMenuChangeFullname.setDisable(true);
+            btnMenuChangeNumber.setDisable(true);
+            btnMenuChangeTelephone.setDisable(true);
         } else {
             btnMenuDelete.setDisable(false);
             btnMenuChangeAdress.setDisable(false);
             btnMenuChangeFullname.setDisable(false);
+            btnMenuChangeNumber.setDisable(false);
+            btnMenuChangeTelephone.setDisable(false);
         }
     }
 
-    public void onRemove(ActionEvent actionEvent) {
-        if(!btnMenuDelete.isDisable()) {
+    public void onChangeNumber(ActionEvent actionEvent) {
+        if(!btnMenuChangeNumber.isDisable()) {
             PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
-            tablePhoneNumbers.getItems().remove(selectedItem);
-            phoneNumbers.getList().remove(selectedItem);
-        }
-
-    }
-
-    public void onChangeAdress(ActionEvent actionEvent) {
-        if(!btnMenuChangeAdress.isDisable()) {
-            PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
-            Main.inputAdress();
-            if (InputAdressController.adress != null && !InputAdressController.IsCancel) {
-                phoneNumbers.renameAdress(selectedItem.getNumber(), InputAdressController.adress);
+            Main.inputNumberTelephone();
+            if (InputNumberTelephoneController.number != null && !InputNumberTelephoneController.IsCancel) {
+                phoneNumbers.renameNumber(selectedItem.getNumber(), InputNumberTelephoneController.number);
                 refresh();
             }
+
         }
     }
 
@@ -253,6 +252,37 @@ public class Controller {
         }
     }
 
+    public void onChangeAdress(ActionEvent actionEvent) {
+        if(!btnMenuChangeAdress.isDisable()) {
+            PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
+            Main.inputAdress();
+            if (InputAdressController.adress != null && !InputAdressController.IsCancel) {
+                phoneNumbers.renameAdress(selectedItem.getNumber(), InputAdressController.adress);
+                refresh();
+            }
+        }
+    }
+
+    public void onChangeTelephone(ActionEvent actionEvent) {
+        if(!btnMenuChangeTelephone.isDisable()){
+            PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
+            Main.inputTelephone();
+            if (!InputTelephoneController.IsCancel) {
+                phoneNumbers.renameTelephone(selectedItem.getNumber(), InputTelephoneController.telephone);
+                refresh();
+            }
+        }
+    }
+
+    public void onRemove(ActionEvent actionEvent) {
+        if(!btnMenuDelete.isDisable()) {
+            PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
+            tablePhoneNumbers.getItems().remove(selectedItem);
+            phoneNumbers.getList().remove(selectedItem);
+        }
+
+    }
+
     private void AlertInformation(String title, String header, String content, Alert.AlertType typeAlert){
         Alert alert = new Alert(typeAlert);
         alert.setTitle(title);
@@ -260,4 +290,5 @@ public class Controller {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }
