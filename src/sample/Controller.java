@@ -67,6 +67,33 @@ public class Controller {
     private MenuItem findByFullname;
 
     @FXML
+    private TextField txtNumberAdd;
+
+    @FXML
+    private TextField txtFullnameAdd;
+
+    @FXML
+    private TextField txtAdressAdd;
+
+    @FXML
+    private MenuButton btnMenuTelephoneAdd;
+
+    @FXML
+    private Button btnAddPhonenumber;
+
+    @FXML
+    private MenuItem workItemAdd;
+
+    @FXML
+    private MenuItem mobileItemAdd;
+
+    @FXML
+    private MenuItem homeItemAdd;
+
+    @FXML
+    private MenuItem unknownItemAdd;
+
+    @FXML
     private void initialize(){
         phoneNumbers = new PhoneNumbers();
 
@@ -204,7 +231,7 @@ public class Controller {
     public void addToList(ActionEvent actionEvent) {
         Main.inputNumberTelephone();
         if(InputNumberTelephoneController.number!=null && !InputNumberTelephoneController.IsCancel) {
-            if(phoneNumbers.addToList(InputNumberTelephoneController.number)!=null) {
+            if(phoneNumbers.addToList(InputNumberTelephoneController.number, "Неизвестно", "Неизвестно", "Неизвестно")!=null) {
                 list.add(phoneNumbers.getList().get(phoneNumbers.getList().size() - 1));
             } else {
                 AlertInformation("Добавление номера в список", "Номер уже существует", "Такой номер уже существует в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
@@ -224,12 +251,31 @@ public class Controller {
         }
     }
 
-    public void setItemMenu() {
+    public void setItemMenuAdd(){
+        workItemAdd.setOnAction((e) -> btnMenuTelephoneAdd.setText("Рабочий"));
+        mobileItemAdd.setOnAction((e) -> btnMenuTelephoneAdd.setText("Мобильный"));
+        homeItemAdd.setOnAction((e) -> btnMenuTelephoneAdd.setText("Домашний"));
+        unknownItemAdd.setOnAction((e) -> btnMenuTelephoneAdd.setText("Неизвестно"));
+    }
+
+    public void addToListByForm(){
+        if(     txtNumberAdd.getText().matches("[+][0-9]{1,4}[(][0-9]{2}[)][0-9]{3}[-][0-9]{2}[-][0-9]{2}")&&
+                txtFullnameAdd.getText().matches("[А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}")&&
+                txtAdressAdd.getText().matches("[у][л][.][А-Я][а-я]{3,}")&&
+                !btnMenuTelephoneAdd.getText().equals("Выберите телефон"))
+        {
+            if(phoneNumbers.addToList(txtNumberAdd.getText(), txtFullnameAdd.getText(), txtAdressAdd.getText(), btnMenuTelephoneAdd.getText())!=null) {
+                list.add(phoneNumbers.getList().get(phoneNumbers.getList().size() - 1));
+            } else {
+                AlertInformation("Добавление номера в список", "Номер уже существует", "Такой номер уже существует в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
+            }
+        }
+    }
+
+    public void setItemMenuFind() {
         findByNumber.setOnAction((e) -> btnMenuSearchBy.setText("По номеру телефона"));
         findByFullname.setOnAction((e) -> btnMenuSearchBy.setText("По Ф.И.О."));
     }
-
-
 
     public void onChangeSearch() {
         txtSearch.textProperty().addListener(new ChangeListener<String>() {

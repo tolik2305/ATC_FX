@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -46,16 +47,28 @@
                 </Menu>
             </menus>
         </MenuBar>
-      <AnchorPane prefHeight="61.0" prefWidth="756.0">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="756.0">
          <children>
-            <TextField fx:id="txtSearch" focusTraversable="false" layoutX="440.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onChangeSearch" prefHeight="25.0" prefWidth="150.0" promptText="Поиск" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <TextField fx:id="txtSearch" focusTraversable="false" layoutX="438.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onChangeSearch" prefHeight="25.0" prefWidth="150.0" promptText="Поиск" AnchorPane.topAnchor="18.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></TextField>
-            <MenuButton fx:id="btnMenuSearchBy" layoutX="597.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#setItemMenu" prefHeight="25.0" prefWidth="150.0" text="По номеру телефона" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <MenuButton fx:id="btnMenuSearchBy" layoutX="592.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#setItemMenuFind" prefHeight="25.0" prefWidth="150.0" text="По номеру телефона" AnchorPane.topAnchor="18.0">
               <items>
                 <MenuItem fx:id="findByNumber" mnemonicParsing="false" text="По номеру телефона" />
                 <MenuItem fx:id="findByFullname" mnemonicParsing="false" text="По Ф.И.О." />
+              </items>
+            </MenuButton>
+            <TextField layoutX="8.0" layoutY="5.0" prefHeight="25.0" prefWidth="149.0" promptText="Номер телефона" fx:id="txtNumberAdd" />
+            <Button layoutX="334.0" layoutY="22.0" mnemonicParsing="false" text="Добавить" fx:id="btnAddPhonenumber" onMouseClicked="#addToListByForm"/>
+            <TextField layoutX="8.0" layoutY="38.0" promptText="Ф.И.О." fx:id="txtFullnameAdd"/>
+            <TextField layoutX="170.0" layoutY="5.0" promptText="Адрес" fx:id="txtAdressAdd"/>
+            <MenuButton layoutX="170.0" layoutY="38.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Выберите телефон" onMouseClicked="#setItemMenuAdd" fx:id="btnMenuTelephoneAdd">
+              <items>
+                  <MenuItem mnemonicParsing="false" text="Рабочий" fx:id="workItemAdd" />
+                  <MenuItem mnemonicParsing="false" text="Мобильный" fx:id="mobileItemAdd"/>
+                  <MenuItem mnemonicParsing="false" text="Домашний" fx:id="homeItemAdd"/>
+                  <MenuItem mnemonicParsing="false" text="Неизвестно" fx:id="unknownItemAdd"/>
               </items>
             </MenuButton>
          </children>

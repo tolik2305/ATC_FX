@@ -1,5 +1,7 @@
 package sample.Classes;
 
+import sample.Enums.Telephone;
+
 import java.util.ArrayList;
 
 public class PhoneNumbers {
@@ -18,9 +20,12 @@ public class PhoneNumbers {
         this.list = new ArrayList<>(length);
     }
 
-    public ArrayList addToList(String number) {
+    Telephone typeTelephone;
+
+    public ArrayList addToList(String number, String fullname, String adress, String telephone) {
         if(!IsInList(number)) {
-            this.list.add(new PhoneNumber(number));
+            this.list.add(new PhoneNumber(number, fullname, adress, typeTelephone.Неизвестно));
+            this.list.get(list.size()-1).setTelephone(telephone);
             return getList();
         }
         return null;
