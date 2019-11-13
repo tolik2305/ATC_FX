@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +21,8 @@ import java.io.IOException;
 public class Controller {
 
     private ObservableList<PhoneNumber> list = FXCollections.observableArrayList();
+    private static PhoneNumbers phoneNumbers;
+    private String pathname = null;
 
     @FXML
     private MenuItem btnMenuDelete;
@@ -50,7 +54,17 @@ public class Controller {
     @FXML
     private TableColumn<PhoneNumber, String> telephoneColumn;
 
-    private static PhoneNumbers phoneNumbers;
+    @FXML
+    private MenuButton btnMenuSearchBy;
+
+    @FXML
+    private TextField txtSearch;
+
+    @FXML
+    private MenuItem findByNumber;
+
+    @FXML
+    private MenuItem findByFullname;
 
     @FXML
     private void initialize(){
@@ -77,8 +91,6 @@ public class Controller {
         tablePhoneNumbers.getItems().clear();
         addToTable();
     }
-
-    private String pathname = null;
 
     private boolean FileChooserOpen(){
         FileChooser fileChooser = new FileChooser();
@@ -212,6 +224,26 @@ public class Controller {
         }
     }
 
+    public void setItemMenu() {
+        findByNumber.setOnAction((e) -> btnMenuSearchBy.setText("По номеру телефона"));
+        findByFullname.setOnAction((e) -> btnMenuSearchBy.setText("По Ф.И.О."));
+    }
+
+
+
+    public void onChangeSearch() {
+        txtSearch.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(btnMenuSearchBy.getText().equals("По номеру телефона")){
+                    list.setAll(phoneNumbers.getDataByNumber(txtSearch.getText()));
+                } else if(btnMenuSearchBy.getText().equals("По Ф.И.О.")){
+                    list.setAll(phoneNumbers.getDataBySurname(txtSearch.getText()));
+                }
+            }
+        });
+    }
+
     public void onOpen(WindowEvent windowEvent) {
         PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -234,7 +266,7 @@ public class Controller {
             PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
             Main.inputNumberTelephone();
             if (InputNumberTelephoneController.number != null && !InputNumberTelephoneController.IsCancel) {
-                phoneNumbers.renameNumber(selectedItem.getNumber(), InputNumberTelephoneController.number);
+                phoneNumbers.changeNumber(selectedItem.getNumber(), InputNumberTelephoneController.number);
                 refresh();
             }
 
@@ -257,7 +289,7 @@ public class Controller {
             PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
             Main.inputAdress();
             if (InputAdressController.adress != null && !InputAdressController.IsCancel) {
-                phoneNumbers.renameAdress(selectedItem.getNumber(), InputAdressController.adress);
+                phoneNumbers.changeAdress(selectedItem.getNumber(), InputAdressController.adress);
                 refresh();
             }
         }
@@ -268,7 +300,7 @@ public class Controller {
             PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
             Main.inputTelephone();
             if (!InputTelephoneController.IsCancel) {
-                phoneNumbers.renameTelephone(selectedItem.getNumber(), InputTelephoneController.telephone);
+                phoneNumbers.changeTelephone(selectedItem.getNumber(), InputTelephoneController.telephone);
                 refresh();
             }
         }

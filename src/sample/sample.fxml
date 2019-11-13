@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="417.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<VBox prefHeight="417.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
         <MenuBar prefHeight="12.0" prefWidth="666.0" VBox.vgrow="NEVER">
             <menus>
@@ -42,9 +46,23 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <TableView fx:id="tablePhoneNumbers" prefHeight="392.0" prefWidth="730.0">
+      <AnchorPane prefHeight="61.0" prefWidth="756.0">
+         <children>
+            <TextField fx:id="txtSearch" focusTraversable="false" layoutX="440.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onChangeSearch" prefHeight="25.0" prefWidth="150.0" promptText="Поиск" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></TextField>
+            <MenuButton fx:id="btnMenuSearchBy" layoutX="597.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#setItemMenu" prefHeight="25.0" prefWidth="150.0" text="По номеру телефона" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0">
+              <items>
+                <MenuItem fx:id="findByNumber" mnemonicParsing="false" text="По номеру телефона" />
+                <MenuItem fx:id="findByFullname" mnemonicParsing="false" text="По Ф.И.О." />
+              </items>
+            </MenuButton>
+         </children>
+      </AnchorPane>
+        <TableView fx:id="tablePhoneNumbers" focusTraversable="false" prefHeight="393.0" prefWidth="756.0">
             <columns>
-                <TableColumn fx:id="numberTelephoneColumn" prefWidth="150.0" text="Номер телефона"/>
+                <TableColumn fx:id="numberTelephoneColumn" prefWidth="150.0" text="Номер телефона" />
                 <TableColumn fx:id="fullNameColumn" prefWidth="200.0" text="Ф.И.О." />
                 <TableColumn fx:id="adressColumn" prefWidth="250.0" text="Адрес" />
                 <TableColumn fx:id="telephoneColumn" prefWidth="150.0" text="Телефон" />
@@ -52,12 +70,12 @@
          <contextMenu>
             <ContextMenu onShowing="#onOpen">
               <items>
-                  <MenuItem mnemonicParsing="false" disable="true" text="Операции с данными"/>
-                  <MenuItem fx:id="btnMenuChangeNumber" mnemonicParsing="false" onAction="#onChangeNumber" text="Изменить номер"/>
-                  <MenuItem fx:id="btnMenuChangeFullname" mnemonicParsing="false" onAction="#onChangeFullname" text="Изменить Ф.И.О."/>
-                  <MenuItem fx:id="btnMenuChangeAdress" mnemonicParsing="false" onAction="#onChangeAdress" text="Изменить адрес"/>
-                  <MenuItem fx:id="btnMenuChangeTelephone" mnemonicParsing="false" onAction="#onChangeTelephone" text="Изменить телефон"/>
-                  <MenuItem fx:id="btnMenuDelete" mnemonicParsing="false" onAction="#onRemove" text="Удалить"/>
+                  <MenuItem disable="true" mnemonicParsing="false" text="Операции с данными" />
+                  <MenuItem fx:id="btnMenuChangeNumber" mnemonicParsing="false" onAction="#onChangeNumber" text="Изменить номер" />
+                  <MenuItem fx:id="btnMenuChangeFullname" mnemonicParsing="false" onAction="#onChangeFullname" text="Изменить Ф.И.О." />
+                  <MenuItem fx:id="btnMenuChangeAdress" mnemonicParsing="false" onAction="#onChangeAdress" text="Изменить адрес" />
+                  <MenuItem fx:id="btnMenuChangeTelephone" mnemonicParsing="false" onAction="#onChangeTelephone" text="Изменить телефон" />
+                  <MenuItem fx:id="btnMenuDelete" mnemonicParsing="false" onAction="#onRemove" text="Удалить" />
 
               </items>
             </ContextMenu>

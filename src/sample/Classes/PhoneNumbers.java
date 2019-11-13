@@ -32,7 +32,7 @@ public class PhoneNumbers {
     public ArrayList getDataByNumber(String number) {
         ArrayList<PhoneNumber> listDataByNumber = new ArrayList<>();
         for (PhoneNumber phoneNumber: this.list) {
-            if (number.equals(phoneNumber.getNumber())) {
+            if (phoneNumber.getNumber().contains(number)) {
                 listDataByNumber.add(phoneNumber);
             }
         }
@@ -66,15 +66,7 @@ public class PhoneNumbers {
         }
     }
 
-    public void renameAdress(String number, String adress){
-        for (PhoneNumber phoneNumber: this.list) {
-            if(number.equals(phoneNumber.getNumber())){
-                phoneNumber.setAdress(adress);
-            }
-        }
-    }
-
-    public void renameNumber(String numberOld, String numberNew){
+    public void changeNumber(String numberOld, String numberNew){
         for(PhoneNumber phoneNumber: this.list){
             if(numberOld.equals(phoneNumber.getNumber())){
                 phoneNumber.setNumber(numberNew);
@@ -82,7 +74,15 @@ public class PhoneNumbers {
         }
     }
 
-    public void renameTelephone(String number, String telephone){
+    public void changeAdress(String number, String adress){
+        for (PhoneNumber phoneNumber: this.list) {
+            if(number.equals(phoneNumber.getNumber())){
+                phoneNumber.setAdress(adress);
+            }
+        }
+    }
+
+    public void changeTelephone(String number, String telephone){
         for (PhoneNumber phoneNumber:this.list) {
             if(number.equals(phoneNumber.getNumber())){
                 phoneNumber.setTelephone(telephone);
