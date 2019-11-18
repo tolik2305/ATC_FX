@@ -49,28 +49,28 @@
         </MenuBar>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="756.0">
          <children>
-            <TextField fx:id="txtSearch" focusTraversable="false" layoutX="438.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onChangeSearch" prefHeight="25.0" prefWidth="150.0" promptText="Поиск" AnchorPane.topAnchor="18.0">
+            <TextField fx:id="txtSearch" focusTraversable="false" layoutX="435.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onChangeSearch" prefHeight="25.0" prefWidth="150.0" promptText="Поиск" AnchorPane.topAnchor="22.0">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets></TextField>
-            <MenuButton fx:id="btnMenuSearchBy" layoutX="592.0" layoutY="18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#setItemMenuFind" prefHeight="25.0" prefWidth="150.0" text="По номеру телефона" AnchorPane.topAnchor="18.0">
+            <MenuButton fx:id="btnMenuSearchBy" layoutX="592.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#setItemMenuFind" prefHeight="25.0" prefWidth="150.0" text="По номеру телефона" AnchorPane.topAnchor="22.0">
               <items>
                 <MenuItem fx:id="findByNumber" mnemonicParsing="false" text="По номеру телефона" />
                 <MenuItem fx:id="findByFullname" mnemonicParsing="false" text="По Ф.И.О." />
               </items>
             </MenuButton>
-            <TextField layoutX="8.0" layoutY="5.0" prefHeight="25.0" prefWidth="149.0" promptText="Номер телефона" fx:id="txtNumberAdd" />
-            <Button layoutX="334.0" layoutY="22.0" mnemonicParsing="false" text="Добавить" fx:id="btnAddPhonenumber" onMouseClicked="#addToListByForm"/>
-            <TextField layoutX="8.0" layoutY="38.0" promptText="Ф.И.О." fx:id="txtFullnameAdd"/>
-            <TextField layoutX="170.0" layoutY="5.0" promptText="Адрес" fx:id="txtAdressAdd"/>
-            <MenuButton layoutX="170.0" layoutY="38.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Выберите телефон" onMouseClicked="#setItemMenuAdd" fx:id="btnMenuTelephoneAdd">
+            <TextField fx:id="txtNumberAdd" layoutX="12.0" layoutY="5.0" onMouseClicked="#onEnteredNumberAdd" prefHeight="25.0" prefWidth="149.0" promptText="Номер телефона" />
+            <TextField fx:id="txtFullnameAdd" layoutX="12.0" layoutY="38.0" onKeyTyped="#onEnteredFullname" promptText="Ф.И.О." />
+            <TextField fx:id="txtAdressAdd" layoutX="174.0" layoutY="5.0" onKeyTyped="#onEnteredAdress" promptText="Адрес" />
+            <MenuButton fx:id="btnMenuTelephoneAdd" layoutX="174.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#setItemMenuAdd" prefHeight="25.0" prefWidth="149.0" text="Выберите телефон">
               <items>
-                  <MenuItem mnemonicParsing="false" text="Рабочий" fx:id="workItemAdd" />
-                  <MenuItem mnemonicParsing="false" text="Мобильный" fx:id="mobileItemAdd"/>
-                  <MenuItem mnemonicParsing="false" text="Домашний" fx:id="homeItemAdd"/>
-                  <MenuItem mnemonicParsing="false" text="Неизвестно" fx:id="unknownItemAdd"/>
+                  <MenuItem fx:id="workItemAdd" mnemonicParsing="false" text="Рабочий" />
+                  <MenuItem fx:id="mobileItemAdd" mnemonicParsing="false" text="Мобильный" />
+                  <MenuItem fx:id="homeItemAdd" mnemonicParsing="false" text="Домашний" />
+                  <MenuItem fx:id="unknownItemAdd" mnemonicParsing="false" text="Неизвестно" />
               </items>
             </MenuButton>
+            <Button fx:id="btnAddPhonenumber" layoutX="344.0" layoutY="23.0" mnemonicParsing="false" onAction="#addToListByForm" text="Добавить" />
          </children>
       </AnchorPane>
         <TableView fx:id="tablePhoneNumbers" focusTraversable="false" prefHeight="393.0" prefWidth="756.0">

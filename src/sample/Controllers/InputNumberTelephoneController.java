@@ -1,5 +1,7 @@
 package sample.Controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -11,6 +13,7 @@ public class InputNumberTelephoneController {
 
     public static String number;
     public static boolean IsCancel = false;
+    private static final int maxLength = 17;
 
     @FXML
     private Button btnCancel;
@@ -24,7 +27,7 @@ public class InputNumberTelephoneController {
         return IsCancel = true;
     }
 
-        public boolean OnClickedOk(MouseEvent mouseEvent){
+    public boolean OnClickedOk(MouseEvent mouseEvent){
         if(!txtNumberTelephone.getText().isEmpty()&&txtNumberTelephone.getText().matches("[+][0-9]{1,4}[(][0-9]{2}[)][0-9]{3}[-][0-9]{2}[-][0-9]{2}")) {
             number = txtNumberTelephone.getText();
             OnClickedCancel(mouseEvent);
@@ -36,5 +39,28 @@ public class InputNumberTelephoneController {
             alert.showAndWait();
         }
         return IsCancel = false;
+    }
+
+    public void OnChangeSearch(){
+        if(txtNumberTelephone.getText().length()==0){
+            txtNumberTelephone.appendText("+");
+        }
+        txtNumberTelephone.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    if(txtNumberTelephone.getText().matches("[+][3][8][0][0-9]")) {
+                        txtNumberTelephone.setText(oldValue+'('+newValue.charAt(newValue.length()-1));
+                    } else if(txtNumberTelephone.getText().matches("[+][3][8][0][(][0-9]{3}")){
+                        txtNumberTelephone.setText(oldValue+')'+newValue.charAt(newValue.length()-1));
+                    } else if(txtNumberTelephone.getText().matches("[+][3][8][0][(][0-9]{2}[)][0-9]{4}")
+                            ||txtNumberTelephone.getText().matches("[+][3][8][0][(][0-9]{2}[)][0-9]{3}[-][0-9]{3}")){
+                        txtNumberTelephone.setText(oldValue+'-'+newValue.charAt(newValue.length()-1));
+                    }
+                    if (txtNumberTelephone.getText().length() > maxLength) {
+                        String s = txtNumberTelephone.getText().substring(0, maxLength);
+                        txtNumberTelephone.setText(s);
+                    }
+                }
+        });
     }
 }

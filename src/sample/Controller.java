@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import java.io.IOException;
 
 public class Controller {
 
+    private static final int maxLength = 17;
     private ObservableList<PhoneNumber> list = FXCollections.observableArrayList();
     private static PhoneNumbers phoneNumbers;
     private String pathname = null;
@@ -101,6 +103,9 @@ public class Controller {
         fullNameColumn.setCellValueFactory(new PropertyValueFactory<PhoneNumber, String>("fullName"));
         adressColumn.setCellValueFactory(new PropertyValueFactory<PhoneNumber, String>("adress"));
         telephoneColumn.setCellValueFactory(new PropertyValueFactory<PhoneNumber, String>("telephone"));
+
+        numberTelephoneColumn.setStyle("-fx-alignment: CENTER;");
+
         addToTable();
     }
 
@@ -169,6 +174,7 @@ public class Controller {
     }
 
     public void exit(ActionEvent actionEvent){
+        Platform.exit();
         System.exit(0);
     }
 
@@ -256,6 +262,77 @@ public class Controller {
         mobileItemAdd.setOnAction((e) -> btnMenuTelephoneAdd.setText("Мобильный"));
         homeItemAdd.setOnAction((e) -> btnMenuTelephoneAdd.setText("Домашний"));
         unknownItemAdd.setOnAction((e) -> btnMenuTelephoneAdd.setText("Неизвестно"));
+
+        btnMenuTelephoneAdd.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(!btnMenuTelephoneAdd.getText().matches("Выберите телефон")){
+                    btnMenuTelephoneAdd.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
+                } else {
+                    btnMenuTelephoneAdd.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                }
+            }
+        });
+    }
+
+    public void onEnteredNumber(TextField textField){
+        if(textField.getText().length()==0){
+            textField.appendText("+");
+        }
+        textField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (textField.getText().length() > maxLength) {
+                    String s = textField.getText().substring(0, maxLength);
+                    textField.setText(s);
+                }
+
+                if(textField.getText().matches("[+][3][8][0][0-9]")) {
+                    textField.setText(oldValue+'('+newValue.charAt(newValue.length()-1));
+                } else if(textField.getText().matches("[+][3][8][0][(][0-9]{3}")){
+                    textField.setText(oldValue+')'+newValue.charAt(newValue.length()-1));
+                } else if(textField.getText().matches("[+][3][8][0][(][0-9]{2}[)][0-9]{4}")||
+                          textField.getText().matches("[+][3][8][0][(][0-9]{2}[)][0-9]{3}[-][0-9]{3}")){
+                    textField.setText(oldValue+'-'+newValue.charAt(newValue.length()-1));
+                }
+
+                if(textField.getText().matches("[+][3][8][0][(][0-9]{2}[)][0-9]{3}[-][0-9]{2}[-][0-9]{2}")){
+                    textField.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
+                } else {
+                    textField.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                }
+            }
+        });
+    }
+
+    public void onEnteredNumberAdd(){
+        onEnteredNumber(txtNumberAdd);
+    }
+
+    public void onEnteredFullname(){
+        txtFullnameAdd.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(txtFullnameAdd.getText().matches("[А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}")){
+                    txtFullnameAdd.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
+                } else {
+                    txtFullnameAdd.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                }
+            }
+        });
+    }
+
+    public void onEnteredAdress(){
+        txtAdressAdd.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if(txtAdressAdd.getText().matches("[у][л][.][А-Я][а-я]{3,}")){
+                    txtAdressAdd.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
+                } else {
+                    txtAdressAdd.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                }
+            }
+        });
     }
 
     public void addToListByForm(){
@@ -278,10 +355,14 @@ public class Controller {
     }
 
     public void onChangeSearch() {
+        if(txtSearch.getText().length()==0){
+            txtSearch.appendText("+");
+        }
         txtSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 if(btnMenuSearchBy.getText().equals("По номеру телефона")){
+                    onEnteredNumber(txtSearch);
                     list.setAll(phoneNumbers.getDataByNumber(txtSearch.getText()));
                 } else if(btnMenuSearchBy.getText().equals("По Ф.И.О.")){
                     list.setAll(phoneNumbers.getDataBySurname(txtSearch.getText()));
@@ -311,9 +392,16 @@ public class Controller {
         if(!btnMenuChangeNumber.isDisable()) {
             PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
             Main.inputNumberTelephone();
-            if (InputNumberTelephoneController.number != null && !InputNumberTelephoneController.IsCancel) {
-                phoneNumbers.changeNumber(selectedItem.getNumber(), InputNumberTelephoneController.number);
-                refresh();
+            String number = InputNumberTelephoneController.number;
+            if(number.length() !=0) {
+                if (!phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
+                    if (InputNumberTelephoneController.number != null && !InputNumberTelephoneController.IsCancel) {
+                        phoneNumbers.changeNumber(selectedItem.getNumber(), InputNumberTelephoneController.number);
+                        refresh();
+                    }
+                } else {
+                    AlertInformation("Изменение номера телефона", "Номер телефона уже зарегистрирован", "Данный номер телефона " + InputNumberTelephoneController.number + " уже сущесвует в базе. Введите другой номер.", Alert.AlertType.INFORMATION);
+                }
             }
 
         }
@@ -368,5 +456,4 @@ public class Controller {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
 }

@@ -12,7 +12,7 @@ public class ClassExecutingTask {
         timer.cancel();
         timer = new Timer("BackUp");
         Date executionDate = new Date();
-        long delay = 60 * 1000; // Время в секундах
+        long delay = 300 * 1000; // Время в секундах
         timer.scheduleAtFixedRate(task, executionDate, delay);
     }
 }
