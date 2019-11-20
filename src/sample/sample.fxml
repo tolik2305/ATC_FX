@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="417.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<VBox prefHeight="417.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
     <children>
         <MenuBar prefHeight="12.0" prefWidth="666.0" VBox.vgrow="NEVER">
             <menus>
@@ -26,16 +26,11 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Редактирование">
                     <items>
-                  <MenuItem mnemonicParsing="false" onAction="#addToList" text="Добавить номер" />
-                  <MenuItem mnemonicParsing="false" onAction="#removeOfList" text="Удаление из списка" />
                         <MenuItem mnemonicParsing="false" onAction="#clearList" text="Очистить список" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeAbonent" text="Изменение владельца телефонного номера" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Данные">
                     <items>
-                  <MenuItem mnemonicParsing="false" onAction="#findByNumber" text="Сведения об абоненте по его телефонному номеру" />
-                  <MenuItem mnemonicParsing="false" onAction="#findBySurname" text="Поиск телефонного номера по фамилии" />
                         <MenuItem mnemonicParsing="false" onAction="#listOfAvailableAbonents" text="Список свободных номеров" />
                         <MenuItem mnemonicParsing="false" onAction="#printList" text="Список всех номеров" />
                     </items>
@@ -60,8 +55,8 @@
               </items>
             </MenuButton>
             <TextField fx:id="txtNumberAdd" layoutX="12.0" layoutY="5.0" onMouseClicked="#onEnteredNumberAdd" prefHeight="25.0" prefWidth="149.0" promptText="Номер телефона" />
-            <TextField fx:id="txtFullnameAdd" layoutX="12.0" layoutY="38.0" onKeyTyped="#onEnteredFullname" promptText="Ф.И.О." />
-            <TextField fx:id="txtAdressAdd" layoutX="174.0" layoutY="5.0" onKeyTyped="#onEnteredAdress" promptText="Адрес" />
+            <TextField fx:id="txtFullnameAdd" layoutX="12.0" layoutY="38.0" onMouseClicked="#onEnteredFullname" promptText="Ф.И.О." />
+            <TextField fx:id="txtAdressAdd" layoutX="174.0" layoutY="5.0" onMouseClicked="#onEnteredAdress"  promptText="Адрес" />
             <MenuButton fx:id="btnMenuTelephoneAdd" layoutX="174.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#setItemMenuAdd" prefHeight="25.0" prefWidth="149.0" text="Выберите телефон">
               <items>
                   <MenuItem fx:id="workItemAdd" mnemonicParsing="false" text="Рабочий" />

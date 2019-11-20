@@ -10,7 +10,7 @@
    <children>
       <Button fx:id="btnCancel" layoutX="22.0" layoutY="89.0" mnemonicParsing="false" onMouseClicked="#OnClickedCancel" prefHeight="25.0" prefWidth="70.0" text="Отмена" />
       <Button fx:id="btnOk" layoutX="113.0" layoutY="89.0" mnemonicParsing="false" onMouseClicked="#OnClickedOk" prefHeight="25.0" prefWidth="70.0" text="Ок" />
-      <TextField fx:id="txtAdress" layoutX="22.0" layoutY="47.0" prefHeight="25.0" prefWidth="161.0" />
+      <TextField fx:id="txtAdress" layoutX="22.0" onMouseClicked="#onEnteredAdress" layoutY="47.0" prefHeight="25.0" prefWidth="161.0" />
       <Label layoutX="22.0" layoutY="22.0" text="Введите адрес:">
          <font>
             <Font name="Gigi" size="13.0" />

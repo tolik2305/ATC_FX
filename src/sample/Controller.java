@@ -6,9 +6,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.DragEvent;
 import javafx.stage.*;
 import sample.Classes.BackUp;
 import sample.Classes.PhoneNumber;
@@ -184,44 +186,6 @@ public class Controller {
         list.clear();
     }
 
-    public void changeAbonent(ActionEvent actionEvent){
-        Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null&& !InputNumberTelephoneController.IsCancel) {
-            if(phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
-                Main.inputFullname();
-                if (InputFullnameController.surname != null) {
-                    phoneNumbers.reassignementOfOwnership(InputNumberTelephoneController.number, InputFullnameController.surname);
-                    refresh();
-                }
-            }
-            else {
-                AlertInformation("Поиск номера", "Информация", "Такого номер не найден", Alert.AlertType.INFORMATION);
-            }
-        }
-    }
-
-    public void findByNumber(ActionEvent actionEvent){
-        Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null&& !InputNumberTelephoneController.IsCancel){
-            if(phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
-                list.setAll(phoneNumbers.getDataByNumber(InputNumberTelephoneController.number));
-                if(list.size()==0) {
-                    AlertInformation("Поиск абонента по фамилии", "Информация", "Такого абонента нет в базе", Alert.AlertType.INFORMATION);
-                }
-            }
-        }
-    }
-
-    public void findBySurname(ActionEvent actionEvent){
-        Main.inputSurname();
-        if(InputSurnameController.surname!=null && !InputSurnameController.IsCancel) {
-            list.setAll(phoneNumbers.getDataBySurname(InputSurnameController.surname));
-            if(list.size()==0){
-                AlertInformation("Поиск абонента по фамилии", "Не найдено", "Такого абонента нет в базе", Alert.AlertType.INFORMATION);
-            }
-        }
-    }
-
     public void listOfAvailableAbonents(ActionEvent actionEvent){
         list.setAll(phoneNumbers.listOfAvailableNumbers());
     }
@@ -232,29 +196,6 @@ public class Controller {
 
     public void about(ActionEvent actionEvent){
         AlertInformation("О программе", "Лицензия:", "Все права на лицензию принадлежат компании ToCMaH 2019©", Alert.AlertType.INFORMATION);
-    }
-
-    public void addToList(ActionEvent actionEvent) {
-        Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null && !InputNumberTelephoneController.IsCancel) {
-            if(phoneNumbers.addToList(InputNumberTelephoneController.number, "Неизвестно", "Неизвестно", "Неизвестно")!=null) {
-                list.add(phoneNumbers.getList().get(phoneNumbers.getList().size() - 1));
-            } else {
-                AlertInformation("Добавление номера в список", "Номер уже существует", "Такой номер уже существует в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
-            }
-        }
-    }
-
-    public void removeOfList(ActionEvent actionEvent) {
-        Main.inputNumberTelephone();
-        if(InputNumberTelephoneController.number!=null && !InputNumberTelephoneController.IsCancel) {
-            PhoneNumber phoneNumber = phoneNumbers.removeOfList(InputNumberTelephoneController.number);
-            if ((phoneNumber != null)) {
-                list.remove(phoneNumber);
-            } else {
-                AlertInformation("Удаление номера из списка", "Номер не найден", "Такой номер не найден в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
-            }
-        }
     }
 
     public void setItemMenuAdd(){
@@ -269,13 +210,13 @@ public class Controller {
                 if(!btnMenuTelephoneAdd.getText().matches("Выберите телефон")){
                     btnMenuTelephoneAdd.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
                 } else {
-                    btnMenuTelephoneAdd.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                    btnMenuTelephoneAdd.setStyle("-fx-border-color: red; -fx-border-radius: 3px;");
                 }
             }
         });
     }
 
-    public void onEnteredNumber(TextField textField){
+    private void onEnteredNumber(TextField textField){
         if(textField.getText().length()==0){
             textField.appendText("+");
         }
@@ -299,7 +240,7 @@ public class Controller {
                 if(textField.getText().matches("[+][3][8][0][(][0-9]{2}[)][0-9]{3}[-][0-9]{2}[-][0-9]{2}")){
                     textField.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
                 } else {
-                    textField.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                    textField.setStyle("-fx-border-color: red; -fx-border-radius: 3px;");
                 }
             }
         });
@@ -316,20 +257,23 @@ public class Controller {
                 if(txtFullnameAdd.getText().matches("[А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}")){
                     txtFullnameAdd.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
                 } else {
-                    txtFullnameAdd.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                    txtFullnameAdd.setStyle("-fx-border-color: red; -fx-border-radius: 3px;");
                 }
             }
         });
     }
 
     public void onEnteredAdress(){
+        if(txtAdressAdd.getText().length()==0){
+            txtAdressAdd.appendText("ул.");
+        }
         txtAdressAdd.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if(txtAdressAdd.getText().matches("[у][л][.][А-Я][а-я]{3,}")){
+                if(txtAdressAdd.getText().matches("[у][л][.][А-Я][а-я]{3,}[,][ ][0-9]{1,3}")){
                     txtAdressAdd.setStyle("-fx-border-color: green; -fx-border-radius: 3px;");
                 } else {
-                    txtAdressAdd.setStyle("-fx-border-color: blue; -fx-border-radius: 3px;");
+                    txtAdressAdd.setStyle("-fx-border-color: red; -fx-border-radius: 3px;");
                 }
             }
         });
@@ -338,7 +282,7 @@ public class Controller {
     public void addToListByForm(){
         if(     txtNumberAdd.getText().matches("[+][0-9]{1,4}[(][0-9]{2}[)][0-9]{3}[-][0-9]{2}[-][0-9]{2}")&&
                 txtFullnameAdd.getText().matches("[А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}[ ][А-Я][а-я]{2,}")&&
-                txtAdressAdd.getText().matches("[у][л][.][А-Я][а-я]{3,}")&&
+                txtAdressAdd.getText().matches("[у][л][.][А-Я][а-я]{3,}[,][ ][0-9]{1,3}")&&
                 !btnMenuTelephoneAdd.getText().equals("Выберите телефон"))
         {
             if(phoneNumbers.addToList(txtNumberAdd.getText(), txtFullnameAdd.getText(), txtAdressAdd.getText(), btnMenuTelephoneAdd.getText())!=null) {
@@ -346,6 +290,9 @@ public class Controller {
             } else {
                 AlertInformation("Добавление номера в список", "Номер уже существует", "Такой номер уже существует в базе, проверьте правильность ввода!", Alert.AlertType.INFORMATION);
             }
+        }
+        else{
+            AlertInformation("Добавление номера в список", "Некорректный ввод", "Поля заполнены неверно", Alert.AlertType.INFORMATION);
         }
     }
 
@@ -355,8 +302,10 @@ public class Controller {
     }
 
     public void onChangeSearch() {
-        if(txtSearch.getText().length()==0){
+        if(txtSearch.getText().length()==0&&btnMenuSearchBy.getText().equals("По номеру телефона")){
             txtSearch.appendText("+");
+        } else if(txtSearch.getText().equals("+")&& btnMenuSearchBy.getText().equals("По Ф.И.О.")){
+            txtSearch.clear();
         }
         txtSearch.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -367,6 +316,8 @@ public class Controller {
                 } else if(btnMenuSearchBy.getText().equals("По Ф.И.О.")){
                     list.setAll(phoneNumbers.getDataBySurname(txtSearch.getText()));
                 }
+
+
             }
         });
     }
@@ -393,7 +344,7 @@ public class Controller {
             PhoneNumber selectedItem = tablePhoneNumbers.getSelectionModel().getSelectedItem();
             Main.inputNumberTelephone();
             String number = InputNumberTelephoneController.number;
-            if(number.length() !=0) {
+            if(number != null&&!InputNumberTelephoneController.IsCancel) {
                 if (!phoneNumbers.IsInList(InputNumberTelephoneController.number)) {
                     if (InputNumberTelephoneController.number != null && !InputNumberTelephoneController.IsCancel) {
                         phoneNumbers.changeNumber(selectedItem.getNumber(), InputNumberTelephoneController.number);
